@@ -13,58 +13,60 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getProducts($userid)
+
+     public function index()
+     {
+        $products=Product::with('category')->get();
+
+        return $products;
+     }
+
+    public function allProducts($userid)
     {
+        $products=Product::with('category')->get();
 
-        $data = Product::with('category')->get();
+        $userProducts=User::find($userid)->products()->get();
 
-        $userProducts = User::find($userid)->products()->get();
-        return $data;
+        return ["products"=>$products,"cart"=>$userProducts];
     }
 
 
-
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $product = new Product;
-        $product->name = $request->name;
-        $product->price = $request->price;
-        $product->description = $request->description;
-        $product->image = $request->image;
-        $product->cid = $request->cid;
+        $product=new Product;
+        $product->name=$request->name;
+        $product->price=$request->price;
+        $product->image=$request->image;
+        $product->description=$request->description;
+        $product->cid=$request->cid;
+
         $product->save();
-        return ["success" => true, "message" => "Product Created"];
+
+        return ["success"=>true,"message"=>"Product Created"];
+
     }
 
-    /**
-     * Display the specified resource.
-     */
+  
     public function show(string $id)
     {
-        $data = Product::find($id);
+        $data=Product::find($id);
         return $data;
     }
 
-
-
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, string $id)
     {
-        $product = Product::find($id);
-        $product->name = $request->name;
-        $product->price = $request->price;
-        $product->description = $request->description;
-        $product->image = $request->image;
-        $product->cid = $request->cid;
+        $product=Product::find($id);
+        $product->name=$request->name;
+        $product->price=$request->price;
+        $product->image=$request->image;
+        $product->description=$request->description;
+        $product->cid=$request->cid;
+
         $product->save();
-        return ["success" => true, "message" => "Product Updated"];
+
+        return ["success"=>true,"message"=>"Product Updated"];
+
     }
 
     /**
@@ -72,9 +74,8 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        $product = Product::find($id);
+        $product=Product::find($id);
         $product->delete();
-        return ["success" => true, "message" => "Product Deleted"];
-
+        return ["success"=>true,"message"=>"Product Deleted"];
     }
 }

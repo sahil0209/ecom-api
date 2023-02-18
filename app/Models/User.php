@@ -15,10 +15,15 @@ class User extends Authenticatable
     protected $hidden = ['password'];
 
     public function products(){
-        return $this->belongsToMany(Product::class,'user_products');
+        return $this->belongsToMany(Product::class,'user_products')->withPivot(['quantity','amount','id']);
     }
 
     public function orders(){
         return $this->hasMany(Order::class);
+    }
+
+    public function userissues()
+    {
+        return $this->hasMany(UserIssue::class);
     }
 }
