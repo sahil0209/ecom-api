@@ -12,9 +12,9 @@ class AdminController extends Controller
     public function login(Request $request){
         $credentials = $request->only(['username','password']);
         if(Auth::guard('admin')->attempt($credentials)){
-            return ["message"=>"Admin Login Success"];
+            return ["success"=>true,"message"=>"Admin Login Success"];
         } 
-        return ["message"=>"Admin Login Failure"];
+        return ["success"=>false,"message"=>"Admin Login Failure"];
     }
 
     public function register(Request $request)
