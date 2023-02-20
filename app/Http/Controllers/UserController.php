@@ -28,27 +28,34 @@ class UserController extends Controller
     {
         $user = new User;
 
+        $request->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'required | email',
+            'password' => 'required',
+            'phonenumber' => 'required|numeric|digits:10'
+        ]);
+
         $user->firstname = $request->firstname;
         $user->lastname = $request->lastname;
         $user->email = $request->email;
-        $user->password=Hash::make($request->password);
+        $user->password = Hash::make($request->password);
         $user->phonenumber = $request->phonenumber;
-       
+
         $user->save();
 
-        return ["success"=>true,"message"=>"User Registered"];
+        return ["success" => true, "message" => "User Registered"];
     }
 
     public function login(Request $request)
     {
-        $credentials = $request->only(['email','password']);
-        if(Auth::attempt($credentials)){
+        $credentials = $request->only(['email', 'password']);
+        if (Auth::attempt($credentials)) {
             // return "Logged In";
             $token = $request->user()->createToken('login_token')->plainTextToken;
-            return ["token"=>$token,"user"=>$request->user()];
-        }
-        else{
-            return ["success"=>false,"message"=>"Something Went Wrong"];
+            return ["token" => $token, "user" => $request->user()];
+        } else {
+            return ["success" => false, "message" => "Something Went Wrong"];
         }
 
     }

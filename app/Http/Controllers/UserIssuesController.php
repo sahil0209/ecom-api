@@ -13,7 +13,7 @@ class UserIssuesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() 
+    public function index()
     {
         //
         $issues = UserIssue::all();
@@ -27,7 +27,12 @@ class UserIssuesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'address' => 'required',
+            'user_id' => 'required'
+        ]);
         $issuedata = new UserIssue;
         $issuedata->title = $request->title;
         $issuedata->description = $request->description;
@@ -35,13 +40,13 @@ class UserIssuesController extends Controller
         $issuedata->user_id = $request->user_id;
         $issuedata->save();
 
-        return ["success"=>true,"message"=>"Issue Inserted"];
+        return ["success" => true, "message" => "Issue Inserted"];
 
     }
 
     public function userIssues($id)
     {
-        $data=User::find($id)->userissues()->get();
+        $data = User::find($id)->userissues()->get();
         return $data;
     }
 
@@ -62,13 +67,16 @@ class UserIssuesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'status' => 'required',
+            'comment' => 'required'
+        ]);
         $issueupdate = UserIssue::find($id);
         $issueupdate->status = $request->status;
         $issueupdate->comment = $request->comment;
         $issueupdate->save();
 
-        return ["success"=>true,"message"=>"Issue Updated"];
+        return ["success" => true, "message" => "Issue Updated"];
 
     }
 
@@ -81,7 +89,7 @@ class UserIssuesController extends Controller
         $issueupdate = UserIssue::find($id);
         $issueupdate->delete();
 
-        return ["success"=>true,"message"=>"Issue Deleted"];
+        return ["success" => true, "message" => "Issue Deleted"];
 
 
     }

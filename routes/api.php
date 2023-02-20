@@ -36,26 +36,28 @@ Route::post('/admins/register', [AdminController::class, 'register']);
 Route::resource('/users',UserController::class);
 Route::post("/users/login",[UserController::class,'login']);
 
-
 // Category routes 
 Route::resource('/categories',CategoryController::class);
 // product routes 
 Route::resource("/products",ProductController::class);
-
-Route::get("/productswithcart/{userid}",[ProductController::class,'allProducts']);
-Route::delete("/removefromcart/{userid}/{productid}",[UserProductController::class,'removeFromCart']);
-
-Route::get("/cart/{id}",[UserProductController::class,'userProducts']);
-Route::post('/cart/add',[UserProductController::class,'store']);
-Route::put("/cart/update/{id}",[UserProductController::class,'update']);
-
-// Issues
-
-Route::get('/issue',[UserIssuesController::class,'index']);
-Route::put('/issue/{id}',[UserIssuesController::class,'update']);
-Route::post('/issue',[UserIssuesController::class,'store']);
-Route::get('/issue/{id}',[UserIssuesController::class,'userIssues']);
-
+Route::middleware('auth:sanctum')->group(function(){
+    
+    
+    Route::get("/productswithcart/{userid}",[ProductController::class,'allProducts']);
+    Route::delete("/removefromcart/{userid}/{productid}",[UserProductController::class,'removeFromCart']);
+    
+    Route::get("/cart/{id}",[UserProductController::class,'userProducts']);
+    Route::post('/cart/add',[UserProductController::class,'store']);
+    Route::put("/cart/update/{id}",[UserProductController::class,'update']);
+    
+    // Issues
+    
+    Route::get('/issue',[UserIssuesController::class,'index']);
+    Route::put('/issue/{id}',[UserIssuesController::class,'update']);
+    Route::post('/issue',[UserIssuesController::class,'store']);
+    Route::get('/issue/{id}',[UserIssuesController::class,'userIssues']);
+    
+});
 // Crop
 Route::get('/crops',[CropController::class,'index']);
 
